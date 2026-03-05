@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoho Desk Case Study — Rounak</title>
+<meta name="description" content="Complete Zoho Desk implementation for a D2C e-commerce brand — from shared inbox to structured support operation">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,400;1,6..72,600;1,6..72,700&family=General+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:#0b0e14;color:#b0bec5;font-family:'General Sans',system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7}
+  ::-webkit-scrollbar{width:5px}
+  ::-webkit-scrollbar-track{background:#0b0e14}
+  ::-webkit-scrollbar-thumb{background:#1e2a38;border-radius:3px}
+  ::selection{background:rgba(96,195,228,0.2);color:#e8f4f8}
+  a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useRef, useEffect } = React;
+
+const useInView=(t=0.1)=>{const r=useRef(null);const[v,s]=useState(false);useEffect(()=>{const e=r.current;if(!e)return;const o=new IntersectionObserver(([x])=>{if(x.isIntersecting){s(true);o.disconnect()}},{threshold:t});o.observe(e);return()=>o.disconnect()},[]);return[r,v]};
+const F=({children,delay=0,style={}})=>{const[r,v]=useInView(0.06);return React.createElement("div",{ref:r,style:{opacity:v?1:0,transform:v?"none":"translateY(40px)",transition:`all 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s`,...style}},children)};
+
+const ice="#60c3e4",iceDim="#4a9ab8",iceBg="rgba(96,195,228,0.05)",iceBorder="rgba(96,195,228,0.15)";
+const bg="#0b0e14",surface="#0f1319",card="#131820",border="#1c2533";
+const text="#e2e8ed",muted="#8896a4",dim="#566476";
+const coral="#e8735a",green="#4ade80",amber="#eab308",violet="#a78bfa",rose="#f472b6",teal="#2dd4bf";
+const serif="'Newsreader',Georgia,serif",mono="'IBM Plex Mono',monospace";
+
+function App(){
+  const [hovDel,setHovDel]=useState(null);
+  const wrap={maxWidth:960,margin:"0 auto",padding:"0 28px"};
+
+  return React.createElement("div",{style:{background:bg,minHeight:"100vh"}},
+
+    // ═══ HERO ═══
+    React.createElement("section",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",position:"relative",overflow:"hidden",padding:"80px 28px"}},
+      React.createElement("div",{style:{position:"absolute",top:"-25%",right:"-15%",width:800,height:800,background:"radial-gradient(circle, rgba(96,195,228,0.04), transparent 60%)",pointerEvents:"none"}}),
+      React.createElement("div",{style:{position:"absolute",bottom:"-20%",left:"-20%",width:700,height:700,background:"radial-gradient(circle, rgba(232,115,90,0.03), transparent 60%)",pointerEvents:"none"}}),
+      React.createElement("div",{style:{...wrap,position:"relative",zIndex:1}},
+        React.createElement(F,{delay:0},
+          React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:24,background:iceBg,border:`1px solid ${iceBorder}`,marginBottom:32}},
+            React.createElement("div",{style:{width:6,height:6,borderRadius:3,background:ice}}),
+            React.createElement("span",{style:{fontSize:12,fontWeight:700,color:iceDim,letterSpacing:"0.08em",textTransform:"uppercase"}},"Case Study \u2014 D2C E-Commerce")
+          )
+        ),
+        React.createElement(F,{delay:0.12},
+          React.createElement("h1",{style:{fontFamily:serif,fontSize:"clamp(38px,5.5vw,64px)",fontWeight:400,lineHeight:1.1,color:text,maxWidth:750,marginBottom:28}},
+            "A growing skincare brand was running ",
+            React.createElement("span",{style:{color:ice,fontStyle:"italic"}},"all customer support"),
+            " through a shared Gmail inbox."
+          )
+        ),
+        React.createElement(F,{delay:0.24},
+          React.createElement("p",{style:{fontSize:19,color:muted,maxWidth:620,lineHeight:1.75,marginBottom:40}},
+            "A D2C skincare company generating over $3M in annual revenue had five support agents working out of a single email inbox. ",
+            React.createElement("span",{style:{color:text,fontWeight:600}},"Emails were being missed, responses were inconsistent, refund requests sat untouched for days"),
+            ", and there was no way to measure whether the team was improving or falling behind. I designed and implemented their entire Zoho Desk system \u2014 channel unification, ticket routing, SLA management, automated workflows, a self-service knowledge base, and real-time reporting."
+          )
+        ),
+        React.createElement(F,{delay:0.36},
+          React.createElement("div",{style:{display:"flex",gap:32,flexWrap:"wrap"}},
+            [{val:"5",label:"Support Channels Unified"},{val:"12",label:"Workflow Automations"},{val:"4",label:"SLA Policies"},{val:"85+",label:"Knowledge Base Articles"}].map((m,i)=>
+              React.createElement("div",{key:i,style:{borderLeft:i===0?"none":`1px solid ${border}`,paddingLeft:i===0?0:32}},
+                React.createElement("div",{style:{fontSize:32,fontWeight:800,color:text,fontFamily:mono,letterSpacing:"-0.03em"}},m.val),
+                React.createElement("div",{style:{fontSize:12,color:dim,marginTop:2}},m.label)
+              )
+            )
+          )
+        ),
+        React.createElement(F,{delay:0.5},
+          React.createElement("div",{style:{marginTop:64,display:"flex",alignItems:"center",gap:12,color:dim,fontSize:12,letterSpacing:"0.08em"}},
+            React.createElement("div",{style:{width:32,height:1,background:dim}}),"SCROLL TO SEE HOW"
+          )
+        )
+      )
+    ),
+
+    // ═══ THE PROBLEM ═══
+    React.createElement("section",{style:{padding:"100px 28px",borderTop:`1px solid ${border}`}},
+      React.createElement("div",{style:wrap},
+        React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:coral,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"The Problem")),
+        React.createElement(F,{delay:0.1},
+          React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4vw,42px)",color:text,lineHeight:1.15,maxWidth:700,marginBottom:28}},
+            "Revenue had scaled. ",
+            React.createElement("span",{style:{color:muted}},"Support infrastructure had not.")
+          )
+        ),
+        React.createElement(F,{delay:0.2},
+          React.createElement("p",{style:{fontSize:16,color:muted,maxWidth:580,lineHeight:1.8,marginBottom:48}},
+            "At 50 orders a day, a shared inbox was manageable. At 400+ daily orders across their website, Amazon, and Instagram, it had become a liability. Five agents, one inbox, no structure, and a growing backlog of frustrated customers."
+          )
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(260px, 1fr))",gap:20}},
+          [
+            {icon:"\uD83D\uDCE8",title:"Missed and duplicated responses",desc:"Without ticket assignment or ownership, two agents would reply to the same customer with different answers, while urgent requests went untouched for days because each person assumed someone else had it covered. There was no way to tell what had been handled and what had not.",color:coral},
+            {icon:"\u23F3",title:"No service level standards",desc:"A simple order status inquiry and a product defect complaint received identical treatment \u2014 both sat in the same queue with the same (nonexistent) priority. High-value customers waited as long as first-time buyers. The team had no targets, and management had no benchmarks.",color:amber},
+            {icon:"\uD83D\uDD04",title:"Repetitive work consuming agent capacity",desc:"\"Where is my order?\" \"What is your return policy?\" \"Do you ship internationally?\" \u2014 agents were writing the same responses 30 or more times per day each. No templates, no knowledge base, no self-service option. Every inquiry, regardless of complexity, required a manual reply from scratch.",color:violet},
+            {icon:"\uD83D\uDCCA",title:"Complete absence of performance data",desc:"The founder could not answer basic questions: What is our average response time? What do customers contact us about most? Which agent handles the most volume? How many open issues exist right now? Every operational decision was based on intuition rather than evidence.",color:ice},
+          ].map((p,i)=>
+            React.createElement(F,{key:i,delay:0.1+i*0.08},
+              React.createElement("div",{style:{background:card,border:`1px solid ${border}`,borderRadius:16,padding:"28px 24px"}},
+                React.createElement("div",{style:{fontSize:28,marginBottom:14}},p.icon),
+                React.createElement("div",{style:{fontSize:15,fontWeight:700,color:text,marginBottom:8}},p.title),
+                React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.7}},p.desc)
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    // ═══ BEFORE / AFTER ═══
+    React.createElement("section",{style:{padding:"100px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
+      React.createElement("div",{style:wrap},
+        React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:ice,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"What I Built")),
+        React.createElement(F,{delay:0.1},
+          React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4vw,42px)",color:text,lineHeight:1.15,maxWidth:700,marginBottom:20}},
+            "From a shared inbox to a ",
+            React.createElement("span",{style:{color:ice,fontStyle:"italic"}},"structured support operation"),
+            " \u2014 built entirely in Zoho Desk."
+          )
+        ),
+        React.createElement(F,{delay:0.2},
+          React.createElement("p",{style:{fontSize:16,color:muted,maxWidth:600,lineHeight:1.75,marginBottom:56}},
+            "This was not a tool configuration. It was a full support operations design \u2014 how tickets flow, who handles what, when things escalate, how performance is tracked, and what customers can resolve on their own."
+          )
+        ),
+        React.createElement(F,{delay:0.25},
+          React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))",gap:24}},
+            React.createElement("div",{style:{background:bg,border:`1px solid ${border}`,borderRadius:16,padding:32,position:"relative",overflow:"hidden"}},
+              React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg, ${coral}, ${amber})`}}),
+              React.createElement("div",{style:{fontSize:11,fontWeight:700,color:coral,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:20}},"\u26D4  Before"),
+              ...["Single shared Gmail inbox for five agents","Emails regularly missed, duplicated, or left unanswered for days","No service level agreements or response time targets","Identical responses rewritten manually 30+ times per day per agent","No performance data of any kind \u2014 all decisions made on intuition","Instagram and Facebook messages going entirely unanswered","Refund requests, product complaints, and general questions all in one undifferentiated pile"].map((t,i)=>
+                React.createElement("div",{key:i,style:{display:"flex",gap:10,marginBottom:12,alignItems:"flex-start"}},
+                  React.createElement("span",{style:{color:coral,fontSize:14,marginTop:2,flexShrink:0}},"\u00D7"),
+                  React.createElement("span",{style:{fontSize:13,color:muted,lineHeight:1.6}},t)
+                )
+              )
+            ),
+            React.createElement("div",{style:{background:bg,border:`1px solid ${border}`,borderRadius:16,padding:32,position:"relative",overflow:"hidden"}},
+              React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg, ${green}, ${teal})`}}),
+              React.createElement("div",{style:{fontSize:11,fontWeight:700,color:green,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:20}},"\u2705  After"),
+              ...["Five channels \u2014 email, web form, Instagram, Facebook, WhatsApp \u2014 consolidated into a single ticketing system","Automatic ticket assignment based on agent specialization and current workload","Four SLA policies (urgent: 1hr, high: 4hr, normal: 8hr, low: 24hr) with automatic escalation on breach","Blueprint workflows enforcing step-by-step processes for refunds, replacements, and warranty claims","85+ knowledge base articles enabling customers to resolve common issues independently","Canned responses and macros reducing repetitive manual work by over 60%","Real-time dashboards tracking open tickets, SLA compliance, agent throughput, and customer satisfaction"].map((t,i)=>
+                React.createElement("div",{key:i,style:{display:"flex",gap:10,marginBottom:12,alignItems:"flex-start"}},
+                  React.createElement("span",{style:{color:green,fontSize:14,marginTop:2,flexShrink:0}},"\u2713"),
+                  React.createElement("span",{style:{fontSize:13,color:muted,lineHeight:1.6}},t)
+                )
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    // ═══ HOW IT WORKS ═══
+    React.createElement("section",{style:{padding:"100px 28px"}},
+      React.createElement("div",{style:wrap},
+        React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:teal,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"How It Works")),
+        React.createElement(F,{delay:0.1},
+          React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4vw,42px)",color:text,lineHeight:1.15,maxWidth:700,marginBottom:56}},
+            "From initial customer contact through ",
+            React.createElement("span",{style:{color:teal}},"resolution and feedback.")
+          )
+        ),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:0,position:"relative"}},
+          React.createElement("div",{style:{position:"absolute",left:15,top:24,bottom:24,width:1,background:`linear-gradient(to bottom, ${ice}50, ${amber}50, ${coral}50, ${violet}50, ${green}50, ${teal}50)`}}),
+          [
+            {stage:"Customer reaches out",when:"Via email, web form, Instagram DM, Facebook message, or WhatsApp",auto:"Regardless of the channel, the inquiry becomes a structured ticket in Zoho Desk. The system automatically tags it with the source channel, retrieves the customer\u2019s order history from Zoho CRM (for existing customers), and assigns an initial priority based on keyword detection. Messages containing terms like \u201Crefund,\u201D \u201Callergic reaction,\u201D or \u201Cdefective\u201D are immediately flagged as urgent.",color:ice,tag:"INTAKE"},
+            {stage:"Ticket is routed to the right agent",when:"Automatic assignment within seconds of ticket creation",auto:"The routing logic evaluates three factors: the nature of the ticket (billing, shipping, product issue), which agents are trained to handle that category, and current workload across the team. Shipping inquiries go to the logistics specialist. Product complaints are assigned to the senior agent. Straightforward status questions go to whichever agent has the most capacity. There is no manual sorting and no opportunity for agents to cherry-pick simpler tickets.",color:amber,tag:"ROUTING"},
+            {stage:"SLA clock begins",when:"Priority determines the deadline \u2014 urgent, high, normal, or low",auto:"Every ticket now operates against a defined timeline. Urgent tickets require a first response within 1 hour and resolution within 4 hours. High-priority tickets allow 4 hours for a response. Normal inquiries have an 8-hour window. Low-priority items allow 24 hours. As the deadline approaches, the assigned agent receives a warning notification. If the SLA is breached, the team lead receives an automatic escalation with the full ticket history and customer context.",color:coral,tag:"SLAs"},
+            {stage:"Agent resolves with process guardrails",when:"Blueprints enforce structured workflows for complex requests",auto:"For common questions, agents use pre-written canned responses with customer details auto-populated \u2014 a single click sends a complete, personalized reply. For more complex requests such as refunds, replacements, or warranty claims, Zoho Desk Blueprints enforce a defined process: verify the order, confirm the return window, approve or escalate the decision, process the action, and confirm with the customer. Steps cannot be skipped, and the customer is notified at each stage.",color:violet,tag:"PROCESS"},
+            {stage:"Resolution and feedback",when:"Ticket closed with satisfaction rating requested",auto:"Upon resolution, the customer receives a satisfaction rating prompt. Their response feeds directly into the CSAT dashboard. Negative ratings automatically generate a follow-up task for the team lead to review what went wrong. Every closed ticket contributes to the reporting data \u2014 issue categories, resolution times, agent performance, product-specific complaint trends, and whether overall quality is improving.",color:green,tag:"RESOLUTION"},
+            {stage:"Or the customer resolves it themselves",when:"Branded help center with 85+ searchable articles",auto:"Before a customer ever submits a ticket, they encounter a branded self-service portal with articles covering order tracking, returns and exchanges, shipping policies, product ingredients, usage instructions, and frequently asked questions. All 85+ articles were written and organized around how customers naturally look for information \u2014 not how the company structures its departments internally. The objective: deflect the most common 40% of inquiries so agents can dedicate their attention to issues that genuinely require human judgment.",color:teal,tag:"SELF-SERVICE"},
+          ].map((s,i)=>
+            React.createElement(F,{key:i,delay:0.08+i*0.06},
+              React.createElement("div",{style:{display:"flex",gap:24,paddingBottom:36,position:"relative"}},
+                React.createElement("div",{style:{width:32,height:32,borderRadius:16,background:s.color+"12",border:`2px solid ${s.color}40`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1}},
+                  React.createElement("div",{style:{width:8,height:8,borderRadius:4,background:s.color}})
+                ),
+                React.createElement("div",{style:{flex:1}},
+                  React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6,flexWrap:"wrap"}},
+                    React.createElement("span",{style:{fontSize:10,fontWeight:700,color:s.color,fontFamily:mono,padding:"2px 8px",borderRadius:4,background:s.color+"12",letterSpacing:"0.06em"}},s.tag),
+                    React.createElement("span",{style:{fontSize:15,fontWeight:700,color:text}},s.stage)
+                  ),
+                  React.createElement("div",{style:{fontSize:12,color:dim,marginBottom:6}},
+                    React.createElement("span",{style:{fontWeight:600,color:muted}},"Trigger: "),s.when
+                  ),
+                  React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.75,background:card,border:`1px solid ${border}`,borderRadius:12,padding:"16px 20px",borderLeft:`3px solid ${s.color}30`}},s.auto)
+                )
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    // ═══ HARD PROBLEMS ═══
+    React.createElement("section",{style:{padding:"100px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
+      React.createElement("div",{style:wrap},
+        React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:amber,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"Implementation Challenges")),
+        React.createElement(F,{delay:0.1},
+          React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4vw,42px)",color:text,lineHeight:1.15,maxWidth:700,marginBottom:20}},
+            "Configuring the tool is straightforward. ",
+            React.createElement("span",{style:{color:amber,fontStyle:"italic"}},"Making it work for a real team is not.")
+          )
+        ),
+        React.createElement(F,{delay:0.2},
+          React.createElement("p",{style:{fontSize:16,color:muted,maxWidth:600,lineHeight:1.75,marginBottom:48}},
+            "Zoho Desk has hundreds of settings. The difference between a setup that streamlines operations and one that creates new problems comes down to understanding how support teams actually work day to day."
+          )
+        ),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:16}},
+          [
+            {title:"Migrating 14 months of email history without losing context",desc:"The team had over a year of customer conversations in Gmail that agents regularly referenced when handling returning customers. Starting fresh was not an option. I built a migration pipeline that imported historical emails as archived tickets, properly threaded and linked to the corresponding customer records in Zoho CRM, ensuring agents always have the complete interaction history available.",tag:"Data Migration",color:ice},
+            {title:"Supporting three brands from a single help desk",desc:"The company operates three distinct skincare lines, each with its own website, brand identity, and customer voice. A customer of one brand should never receive a reply styled for another. I configured a multi-department structure with brand-specific email templates, signatures, SLA policies, and help center themes \u2014 all managed from one Zoho Desk instance without any cross-contamination.",tag:"Multi-Brand",color:violet},
+            {title:"Preventing duplicate tickets across channels",desc:"Customers frequently contacted support through multiple channels for the same issue \u2014 an Instagram DM followed by an email an hour later. Without deduplication, both would be assigned to different agents producing different responses. I implemented workflow rules that detect matching customer identifiers across channels and automatically merge them into a single ticket thread.",tag:"Deduplication",color:coral},
+            {title:"SLA calculations that respect business hours and holidays",desc:"A 4-hour SLA is straightforward in concept, but not in execution. The team operates 9am\u20136pm EST, Monday through Friday. A ticket arriving at 5pm Friday should not breach at 9pm \u2014 the clock must pause overnight and resume Monday morning. I configured business hour calendars with holiday schedules and tested every boundary scenario: tickets arriving at midnight, on public holidays, and at shift transitions.",tag:"Time Logic",color:amber},
+            {title:"Ensuring agent adoption of the new system",desc:"The most significant risk in any implementation is not the technology \u2014 it is adoption. These agents had used Gmail for years. I designed a structured transition: hands-on training sessions, printed quick-reference guides at each workstation, workspace layouts optimized to minimize clicks, and a two-week parallel period where both systems ran simultaneously. Within two weeks, every agent had fully migrated and no one requested a return to the previous setup.",tag:"Change Management",color:green},
+          ].map((ch,i)=>
+            React.createElement(F,{key:i,delay:0.08+i*0.05},
+              React.createElement("div",{style:{background:card,border:`1px solid ${border}`,borderRadius:14,padding:"24px 28px",borderLeft:`3px solid ${ch.color}`}},
+                React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8,flexWrap:"wrap"}},
+                  React.createElement("span",{style:{fontSize:14,fontWeight:700,color:text}},ch.title),
+                  React.createElement("span",{style:{fontSize:10,fontWeight:600,padding:"2px 10px",borderRadius:20,background:ch.color+"12",color:ch.color,fontFamily:mono,letterSpacing:"0.04em",textTransform:"uppercase"}},ch.tag)
+                ),
+                React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.75}},ch.desc)
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    // ═══ DELIVERABLES ═══
+    React.createElement("section",{style:{padding:"100px 28px"}},
+      React.createElement("div",{style:wrap},
+        React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:green,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"Deliverables")),
+        React.createElement(F,{delay:0.1},
+          React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4vw,42px)",color:text,lineHeight:1.15,maxWidth:700,marginBottom:48}},
+            "A complete support operation. ",
+            React.createElement("span",{style:{color:green,fontStyle:"italic"}},"Not a tool configuration.")
+          )
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))",gap:20}},
+          [
+            {icon:"\u2699\uFE0F",title:"Full Zoho Desk Configuration",desc:"Multi-department setup supporting three brands. Five channels connected and verified (email, web form, Instagram, Facebook, WhatsApp). Custom ticket layouts per department. Role-based agent permissions. Business hour calendars with holiday schedules. End-to-end configuration tested across all workflows.",color:ice},
+            {icon:"\u26A1",title:"12 Workflow Automations",desc:"Skill-based ticket assignment with workload balancing. Priority tagging via keyword detection. Four-tier SLA escalation rules. Blueprint processes for refunds, replacements, and warranty claims. Cross-channel duplicate detection and merge. Satisfaction survey triggers on ticket closure. Manager alerts on negative customer feedback.",color:amber},
+            {icon:"\uD83D\uDCDA",title:"85+ Knowledge Base Articles",desc:"Branded self-service help center with articles organized by customer intent: order issues, shipping, returns, product information, account management. Every article written from scratch, search-optimized, with clear step-by-step instructions and screenshots. Designed to deflect the top 40% of repetitive support inquiries.",color:violet},
+            {icon:"\uD83D\uDCCA",title:"Dashboards & Reporting",desc:"Real-time operational overview: open ticket count, SLA compliance rate, average first response time, average resolution time, volume by channel, volume by category. Individual agent performance dashboard. CSAT trend analysis. Automated weekly summary report delivered to the founder every Monday morning.",color:teal},
+            {icon:"\uD83D\uDCDD",title:"Response Templates & Macros",desc:"45+ canned responses covering every common scenario \u2014 order status, refund confirmations, shipping delay notifications, product recommendations, escalation acknowledgments. Eight multi-step macros enabling single-click execution of complex actions. All written in each brand\u2019s distinct voice and tone.",color:coral},
+            {icon:"\uD83D\uDCC4",title:"Documentation & Training",desc:"Complete system architecture document explaining every automation, SLA policy, and workflow. Agent quick-reference cards for daily operations. Video walkthrough of core processes. Troubleshooting runbook for common issues. New agent onboarding guide enabling future hires to be trained without external support.",color:green},
+          ].map((d,i)=>
+            React.createElement(F,{key:i,delay:0.1+i*0.07},
+              React.createElement("div",{
+                onMouseEnter:()=>setHovDel(i),onMouseLeave:()=>setHovDel(null),
+                style:{background:card,border:`1px solid ${hovDel===i?d.color+"40":border}`,borderRadius:16,padding:28,transition:"all 0.3s ease",position:"relative",overflow:"hidden"}
+              },
+                React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:hovDel===i?d.color:"transparent",transition:"all 0.3s ease"}}),
+                React.createElement("div",{style:{fontSize:28,marginBottom:14}},d.icon),
+                React.createElement("div",{style:{fontSize:16,fontWeight:700,color:text,marginBottom:10}},d.title),
+                React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.75}},d.desc)
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    // ═══ TECH ═══
+    React.createElement("section",{style:{padding:"80px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
+      React.createElement("div",{style:{...wrap,textAlign:"center"}},
+        React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:dim,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:32}},"Technologies & Platform")),
+        React.createElement(F,{delay:0.1},
+          React.createElement("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}},
+            ["Zoho Desk","Zoho CRM Integration","Zoho Analytics","Workflow Automation","Blueprints","SLA Management","Knowledge Base","Multichannel Ticketing","Email Migration","Custom Modules"].map((t,i)=>
+              React.createElement("span",{key:i,style:{padding:"8px 18px",borderRadius:10,fontSize:13,fontWeight:500,color:muted,border:`1px solid ${border}`,background:card}},t)
+            )
+          )
+        )
+      )
+    ),
+
+    // ═══ CTA ═══
+    React.createElement("section",{style:{padding:"120px 28px 100px"}},
+      React.createElement("div",{style:{...wrap,textAlign:"center"}},
+        React.createElement(F,null,
+          React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4.5vw,48px)",color:text,lineHeight:1.15,maxWidth:650,margin:"0 auto 24px"}},
+            "Your support team deserves ",
+            React.createElement("span",{style:{color:ice,fontStyle:"italic"}},"better infrastructure.")
+          )
+        ),
+        React.createElement(F,{delay:0.1},
+          React.createElement("p",{style:{fontSize:16,color:muted,maxWidth:520,margin:"0 auto 40px",lineHeight:1.75}},
+            "I design and implement complete Zoho Desk systems \u2014 from channel setup and ticket routing to SLA management, knowledge bases, and reporting. Every project includes thorough documentation and team training so you can operate independently from day one."
+          )
+        ),
+        React.createElement(F,{delay:0.2},
+          React.createElement("div",{style:{display:"flex",flexDirection:"column",alignItems:"center",gap:24}},
+            React.createElement("a",{href:"PASTE_YOUR_UPWORK_URL_HERE",target:"_blank",rel:"noopener noreferrer",style:{display:"inline-flex",alignItems:"center",gap:10,padding:"14px 36px",borderRadius:12,background:`linear-gradient(135deg, ${ice}, ${iceDim})`,color:"#0b0e14",fontSize:15,fontWeight:700,letterSpacing:"0.02em",cursor:"pointer",textDecoration:"none"}},
+              "Let\u2019s Talk About Your Project"," \u2192"
+            ),
+            React.createElement("div",{style:{fontSize:13,color:dim}},"Usually available within 24 hours")
+          )
+        ),
+        React.createElement(F,{delay:0.3},
+          React.createElement("div",{style:{marginTop:80,paddingTop:40,borderTop:`1px solid ${border}`}},
+            React.createElement("div",{style:{fontSize:11,letterSpacing:"0.12em",color:dim,textTransform:"uppercase",marginBottom:8}},"Built by"),
+            React.createElement("div",{style:{fontSize:24,fontWeight:800,color:text,fontFamily:serif}},"Rounak"),
+            React.createElement("div",{style:{fontSize:13,color:dim,marginTop:6}},"Zoho Desk \u00B7 Help Desk Implementation \u00B7 Support Operations Design")
+          )
+        )
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+</body>
+</html>
