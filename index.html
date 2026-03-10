@@ -8,17 +8,125 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,400;1,6..72,600;1,6..72,700&family=General+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0b0e14;--surface:#0f1319;--card:#131820;--border:#1c2533;--text:#e2e8ed;--muted:#8896a4;--dim:#566476;--ice:#60c3e4;--ice-dim:#4a9ab8;--coral:#e8735a;--green:#4ade80;--amber:#eab308;--violet:#a78bfa;--teal:#2dd4bf}
   html{scroll-behavior:smooth}
   body{background:#0b0e14;color:#b0bec5;font-family:'General Sans',system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7}
+  body::before{content:"";position:fixed;inset:0;background:
+    radial-gradient(circle at 20% 18%, rgba(96,195,228,0.08), transparent 26%),
+    radial-gradient(circle at 82% 22%, rgba(167,139,250,0.08), transparent 30%),
+    radial-gradient(circle at 50% 82%, rgba(45,212,191,0.06), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent 18%, transparent 82%, rgba(255,255,255,0.015));
+    pointer-events:none;z-index:-3}
+  body::after{content:"";position:fixed;inset:-20%;background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size:110px 110px;transform:perspective(1100px) rotateX(78deg) translateY(42vh) scale(1.65);
+    transform-origin:center top;opacity:.14;mask-image:linear-gradient(to bottom, transparent, rgba(0,0,0,.85) 22%, rgba(0,0,0,.95) 68%, transparent);
+    pointer-events:none;z-index:-2}
   ::-webkit-scrollbar{width:5px}
   ::-webkit-scrollbar-track{background:#0b0e14}
   ::-webkit-scrollbar-thumb{background:#1e2a38;border-radius:3px}
   ::selection{background:rgba(96,195,228,0.2);color:#e8f4f8}
   a{color:inherit;text-decoration:none}
+  .site-shell{position:relative;isolation:isolate}
+  .scene-fixed{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .scene-noise{position:absolute;inset:-20%;opacity:.06;background-image:radial-gradient(rgba(255,255,255,.9) 0.7px, transparent 0.8px);background-size:26px 26px;mix-blend-mode:soft-light}
+  .scene-orb{position:absolute;border-radius:999px;filter:blur(14px);opacity:.55;mix-blend-mode:screen}
+  .scene-plane{position:absolute;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));box-shadow:0 40px 120px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(8px)}
+  .scene-line{position:absolute;height:1px;background:linear-gradient(90deg, transparent, rgba(96,195,228,.45), transparent);opacity:.7}
+  .content-layer{position:relative;z-index:2}
+  .section-shell{position:relative}
+  .section-shell::before{content:"";position:absolute;inset:12% 8% auto;height:220px;background:radial-gradient(circle, rgba(96,195,228,.05), transparent 72%);filter:blur(22px);pointer-events:none}
+  .glass-card{backdrop-filter:blur(16px);box-shadow:0 24px 80px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.03)}
+  .hero-stage{position:absolute;right:max(4vw,24px);top:50%;transform-style:preserve-3d;pointer-events:none;z-index:0}
+  .hero-grid{position:absolute;inset:0;border-radius:28px;background:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size:28px 28px;mask-image:linear-gradient(180deg, rgba(0,0,0,.96), transparent)}
+  .hero-panel{position:absolute;border-radius:28px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.02));box-shadow:0 34px 120px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(16px)}
+  .hero-glow{position:absolute;border-radius:999px;filter:blur(26px);opacity:.52}
+  .progress-rail{position:fixed;top:0;left:0;width:100%;height:1px;z-index:5;background:rgba(255,255,255,.04)}
+  .progress-bar{height:100%;background:linear-gradient(90deg, rgba(96,195,228,.85), rgba(167,139,250,.7), rgba(45,212,191,.82));box-shadow:0 0 24px rgba(96,195,228,.35);transform-origin:left center}
+  @media (max-width: 980px){
+    .hero-stage{opacity:.55;right:-40px;transform:translateY(-40%) scale(.75)!important}
+    body::after{opacity:.08}
+  }
+  @media (max-width: 760px){
+    .hero-stage{display:none}
+    .section-shell::before{opacity:.6}
+  }
+
+  .fx-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1;perspective:1400px;transform-style:preserve-3d}
+  .fx-grid{position:absolute;inset:-18%;background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);background-size:72px 72px;transform:rotateX(76deg) translateY(calc(34vh + var(--scroll,0px) * .10)) scale(1.45);transform-origin:center top;opacity:.16;mask-image:linear-gradient(to bottom, transparent, rgba(0,0,0,.95) 18%, rgba(0,0,0,.95) 72%, transparent)}
+  .fx-vignette{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, transparent 0, transparent 45%, rgba(11,14,20,.28) 100%)}
+  .fx-orb{position:absolute;border-radius:999px;filter:blur(24px);mix-blend-mode:screen;opacity:.7;transform:translate3d(0,0,0)}
+  .fx-plane{position:absolute;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));box-shadow:0 40px 140px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.09);backdrop-filter:blur(10px);transform-style:preserve-3d}
+  .fx-plane::before{content:"";position:absolute;inset:10px;border-radius:inherit;border:1px solid rgba(255,255,255,.06)}
+  .fx-plane::after{content:"";position:absolute;left:8%;right:8%;top:14%;height:1px;background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent)}
+  .fx-plane-a{width:min(34vw,440px);height:min(34vw,440px);left:-4vw;top:12vh;border-radius:40px;transform:translate3d(0, calc(var(--scroll,0px) * .12), 0) rotateX(70deg) rotateZ(calc(10deg + var(--scroll-r,0deg)))}
+  .fx-plane-b{width:min(22vw,300px);height:min(22vw,300px);right:5vw;top:18vh;border-radius:32px;transform:translate3d(0, calc(var(--scroll,0px) * -.10), 120px) rotateX(72deg) rotateZ(calc(-16deg - var(--scroll-r,0deg)))}
+  .fx-plane-c{width:min(28vw,360px);height:min(28vw,360px);right:-2vw;bottom:10vh;border-radius:38px;transform:translate3d(0, calc(var(--scroll,0px) * -.08), 40px) rotateX(73deg) rotateZ(calc(-8deg + var(--scroll-r,0deg) * .6))}
+  .fx-line{position:absolute;height:1px;background:linear-gradient(90deg, transparent, rgba(96,195,228,.75), rgba(167,139,250,.52), transparent);opacity:.8;filter:drop-shadow(0 0 12px rgba(96,195,228,.18))}
+  .fx-line-a{width:46vw;left:6vw;top:20vh;transform:translate3d(0, calc(var(--scroll,0px) * .06), 0) rotate(-14deg)}
+  .fx-line-b{width:52vw;right:-8vw;top:54vh;transform:translate3d(0, calc(var(--scroll,0px) * -.05), 0) rotate(-28deg)}
+  .fx-shard{position:absolute;width:120px;height:120px;border-radius:24px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.015));box-shadow:0 24px 80px rgba(0,0,0,.26)}
+  .fx-shard-a{left:18vw;top:68vh;transform:translate3d(0, calc(var(--scroll,0px) * -.12), 120px) rotateX(64deg) rotateZ(36deg)}
+  .fx-shard-b{right:20vw;top:26vh;transform:translate3d(0, calc(var(--scroll,0px) * .09), 60px) rotateX(68deg) rotateZ(-28deg)}
+  .content-layer{position:relative;z-index:3}
+  @media (max-width:760px){
+    .fx-bg{opacity:1}
+    .fx-grid{background-size:42px 42px;opacity:.18;transform:rotateX(78deg) translateY(calc(40vh + var(--scroll,0px) * .08)) scale(1.6)}
+    .fx-plane-a{width:58vw;height:58vw;left:-16vw;top:16vh;transform:translate3d(0, calc(var(--scroll,0px) * .10), 0) rotateX(72deg) rotateZ(calc(10deg + var(--scroll-r,0deg)))}
+    .fx-plane-b{width:42vw;height:42vw;right:-6vw;top:14vh;transform:translate3d(0, calc(var(--scroll,0px) * -.08), 90px) rotateX(72deg) rotateZ(calc(-14deg - var(--scroll-r,0deg)))}
+    .fx-plane-c{width:52vw;height:52vw;right:-12vw;bottom:12vh;transform:translate3d(0, calc(var(--scroll,0px) * -.06), 20px) rotateX(74deg) rotateZ(calc(-6deg + var(--scroll-r,0deg) * .5))}
+    .fx-shard{display:none}
+    .fx-line-a{width:76vw;left:-6vw;top:24vh}
+    .fx-line-b{width:88vw;right:-22vw;top:62vh}
+    .hero-stage{display:block;opacity:.72;right:-86px!important;top:34%!important;transform:translateY(-20%) scale(.46)!important}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .fx-grid,.fx-plane-a,.fx-plane-b,.fx-plane-c,.fx-line-a,.fx-line-b,.fx-shard-a,.fx-shard-b{transform:none!important}
+  }
+
 </style>
 </head>
 <body>
+<div class="fx-bg" aria-hidden="true">
+  <div class="fx-grid"></div>
+  <div class="fx-vignette"></div>
+  <div class="fx-orb" style="width:340px;height:340px;left:-70px;top:100px;background:radial-gradient(circle, rgba(96,195,228,.32), rgba(96,195,228,0) 72%);"></div>
+  <div class="fx-orb" style="width:280px;height:280px;right:-40px;top:80px;background:radial-gradient(circle, rgba(167,139,250,.26), rgba(167,139,250,0) 72%);"></div>
+  <div class="fx-orb" style="width:300px;height:300px;left:22vw;bottom:70px;background:radial-gradient(circle, rgba(45,212,191,.18), rgba(45,212,191,0) 72%);"></div>
+  <div class="fx-plane fx-plane-a"></div>
+  <div class="fx-plane fx-plane-b"></div>
+  <div class="fx-plane fx-plane-c"></div>
+  <div class="fx-line fx-line-a"></div>
+  <div class="fx-line fx-line-b"></div>
+  <div class="fx-shard fx-shard-a"></div>
+  <div class="fx-shard fx-shard-b"></div>
+</div>
+
 <div id="root"></div>
+
+<script>
+(function(){
+  const root=document.documentElement;
+  const reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){root.style.setProperty('--scroll','0px');root.style.setProperty('--scroll-r','0deg');return;}
+  let ticking=false;
+  function update(){
+    const y=window.scrollY||window.pageYOffset||0;
+    root.style.setProperty('--scroll', (y*0.65)+'px');
+    root.style.setProperty('--scroll-r', (y*0.02)+'deg');
+    ticking=false;
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } }
+  update();
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', update);
+})();
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
@@ -26,7 +134,30 @@
 const { useState, useRef, useEffect } = React;
 
 const useInView=(t=0.1)=>{const r=useRef(null);const[v,s]=useState(false);useEffect(()=>{const e=r.current;if(!e)return;const o=new IntersectionObserver(([x])=>{if(x.isIntersecting){s(true);o.disconnect()}},{threshold:t});o.observe(e);return()=>o.disconnect()},[]);return[r,v]};
-const F=({children,delay=0,style={}})=>{const[r,v]=useInView(0.06);return React.createElement("div",{ref:r,style:{opacity:v?1:0,transform:v?"none":"translateY(40px)",transition:`all 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s`,...style}},children)};
+const useScrollY=()=>{const[y,setY]=useState(0);useEffect(()=>{const onScroll=()=>setY(window.scrollY||window.pageYOffset||0);onScroll();window.addEventListener("scroll",onScroll,{passive:true});return()=>window.removeEventListener("scroll",onScroll)},[]);return y};
+const useScrollProgress=()=>{const[p,setP]=useState(0);useEffect(()=>{const onScroll=()=>{const h=document.documentElement.scrollHeight-window.innerHeight;setP(h>0?(window.scrollY||0)/h:0)};onScroll();window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll);return()=>{window.removeEventListener("scroll",onScroll);window.removeEventListener("resize",onScroll)}},[]);return p};
+const F=({children,delay=0,style={}})=>{const[r,v]=useInView(0.06);return React.createElement("div",{ref:r,style:{opacity:v?1:0,transform:v?"translate3d(0,0,0)":"translate3d(0,40px,0)",transition:`opacity 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s`,willChange:"transform, opacity",...style}},children)};
+const TiltCard=({children,scrollY=0,strength=18,style={}})=>React.createElement("div",{style:{transform:`perspective(1200px) rotateX(${Math.max(-10,Math.min(10,(scrollY||0)*0.012-strength*0.2))}deg) rotateY(${Math.sin((scrollY||0)/280)*strength*0.22}deg) translate3d(0, ${Math.sin((scrollY||0)/260)*-8}px, 0)`,transformStyle:"preserve-3d",willChange:"transform",...style}},children);
+const ProgressBar=({progress})=>React.createElement("div",{className:"progress-rail"},React.createElement("div",{className:"progress-bar",style:{transform:`scaleX(${Math.max(0,Math.min(1,progress))})`}}));
+const BackgroundScene=({scrollY=0})=>React.createElement("div",{className:"scene-fixed","aria-hidden":"true"},
+  React.createElement("div",{className:"scene-noise"}),
+  React.createElement("div",{className:"scene-orb",style:{width:420,height:420,left:"-6%",top:120,background:"radial-gradient(circle, rgba(96,195,228,.28), rgba(96,195,228,0))",transform:`translate3d(0, ${scrollY*0.12}px, 0)`}}),
+  React.createElement("div",{className:"scene-orb",style:{width:360,height:360,right:"-4%",top:"16%",background:"radial-gradient(circle, rgba(167,139,250,.22), rgba(167,139,250,0))",transform:`translate3d(0, ${scrollY*-0.08}px, 0)`}}),
+  React.createElement("div",{className:"scene-orb",style:{width:420,height:420,left:"22%",bottom:"8%",background:"radial-gradient(circle, rgba(45,212,191,.17), rgba(45,212,191,0))",transform:`translate3d(0, ${scrollY*-0.05}px, 0)`}}),
+  React.createElement("div",{className:"scene-line",style:{width:"48vw",left:"6vw",top:"19%",transform:`translate3d(0, ${scrollY*0.04}px, 0) rotate(-12deg)`}}),
+  React.createElement("div",{className:"scene-line",style:{width:"52vw",right:"-8vw",top:"48%",transform:`translate3d(0, ${scrollY*-0.03}px, 0) rotate(-28deg)`}}),
+  React.createElement("div",{className:"scene-plane",style:{width:320,height:320,borderRadius:42,left:"6vw",top:"18vh",transform:`perspective(1100px) rotateX(71deg) rotateZ(${8+scrollY*0.003}deg) translate3d(0, ${scrollY*0.05}px, 0)`}}),
+  React.createElement("div",{className:"scene-plane",style:{width:260,height:260,borderRadius:36,right:"8vw",top:"58vh",transform:`perspective(1100px) rotateX(71deg) rotateZ(${-16-scrollY*0.002}deg) translate3d(0, ${scrollY*-0.06}px, 0)`}})
+);
+const HeroDepth=({scrollY=0})=>React.createElement("div",{className:"hero-stage",style:{width:"min(42vw,520px)",height:"min(42vw,520px)",transform:`translateY(-46%) translate3d(0, ${scrollY*-0.16}px, 0) rotateX(12deg) rotateY(${-14+Math.sin(scrollY/240)*4}deg)`}},
+  React.createElement("div",{className:"hero-glow",style:{inset:"10% 6% auto auto",width:260,height:260,background:"radial-gradient(circle, rgba(96,195,228,.4), rgba(96,195,228,0))",transform:"translateZ(50px)"}}),
+  React.createElement("div",{className:"hero-glow",style:{left:"8%",bottom:"6%",width:220,height:220,background:"radial-gradient(circle, rgba(167,139,250,.28), rgba(167,139,250,0))",transform:"translateZ(10px)"}}),
+  React.createElement("div",{className:"hero-panel glass-card",style:{inset:"18% 10% 10% 18%",transform:"translateZ(10px) rotateZ(-12deg)"}}),
+  React.createElement("div",{className:"hero-panel",style:{inset:"10% 18% 22% 8%",transform:"translateZ(70px) rotateZ(11deg)"}}),
+  React.createElement("div",{className:"hero-panel",style:{inset:"26% 24% 8% 20%",transform:"translateZ(130px) rotateZ(-2deg)",background:"linear-gradient(180deg, rgba(12,17,24,.95), rgba(18,24,32,.72))"}}),
+  React.createElement("div",{className:"hero-grid",style:{transform:"translateZ(160px) rotateZ(0deg)"}}),
+  React.createElement("div",{style:{position:"absolute",left:"24%",top:"30%",right:"24%",bottom:"30%",borderRadius:999,background:"radial-gradient(circle, rgba(255,255,255,.18), transparent 62%)",transform:"translateZ(180px)"}})
+);
 
 const ice="#60c3e4",iceDim="#4a9ab8",iceBg="rgba(96,195,228,0.05)",iceBorder="rgba(96,195,228,0.15)";
 const bg="#0b0e14",surface="#0f1319",card="#131820",border="#1c2533";
@@ -36,12 +167,18 @@ const serif="'Newsreader',Georgia,serif",mono="'IBM Plex Mono',monospace";
 
 function App(){
   const [hovDel,setHovDel]=useState(null);
+  const scrollY=useScrollY();
+  const scrollProgress=useScrollProgress();
   const wrap={maxWidth:960,margin:"0 auto",padding:"0 28px"};
 
-  return React.createElement("div",{style:{background:bg,minHeight:"100vh"}},
+  return React.createElement("div",{className:"site-shell",style:{background:bg,minHeight:"100vh"}},
+    React.createElement(BackgroundScene,{scrollY}),
+    React.createElement(ProgressBar,{progress:scrollProgress}),
+    React.createElement("div",{className:"content-layer"},
 
     // ═══ HERO ═══
-    React.createElement("section",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",position:"relative",overflow:"hidden",padding:"80px 28px"}},
+    React.createElement("section",{className:"section-shell",style:{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"center",position:"relative",overflow:"hidden",padding:"80px 28px"}},
+      React.createElement(HeroDepth,{scrollY}),
       React.createElement("div",{style:{position:"absolute",top:"-25%",right:"-15%",width:800,height:800,background:"radial-gradient(circle, rgba(96,195,228,0.04), transparent 60%)",pointerEvents:"none"}}),
       React.createElement("div",{style:{position:"absolute",bottom:"-20%",left:"-20%",width:700,height:700,background:"radial-gradient(circle, rgba(232,115,90,0.03), transparent 60%)",pointerEvents:"none"}}),
       React.createElement("div",{style:{...wrap,position:"relative",zIndex:1}},
@@ -66,11 +203,13 @@ function App(){
           )
         ),
         React.createElement(F,{delay:0.36},
-          React.createElement("div",{style:{display:"flex",gap:32,flexWrap:"wrap"}},
-            [{val:"5",label:"Support Channels Unified"},{val:"12",label:"Workflow Automations"},{val:"4",label:"SLA Policies"},{val:"85+",label:"Knowledge Base Articles"}].map((m,i)=>
-              React.createElement("div",{key:i,style:{borderLeft:i===0?"none":`1px solid ${border}`,paddingLeft:i===0?0:32}},
-                React.createElement("div",{style:{fontSize:32,fontWeight:800,color:text,fontFamily:mono,letterSpacing:"-0.03em"}},m.val),
-                React.createElement("div",{style:{fontSize:12,color:dim,marginTop:2}},m.label)
+          React.createElement(TiltCard,{scrollY,strength:14,style:{display:"inline-block"}},
+            React.createElement("div",{style:{display:"flex",gap:32,flexWrap:"wrap",padding:"18px 22px",border:`1px solid ${iceBorder}`,borderRadius:24,background:"linear-gradient(180deg, rgba(19,24,32,.84), rgba(11,14,20,.52))",backdropFilter:"blur(16px)"}},
+              [{val:"5",label:"Support Channels Unified"},{val:"12",label:"Workflow Automations"},{val:"4",label:"SLA Policies"},{val:"85+",label:"Knowledge Base Articles"}].map((m,i)=>
+                React.createElement("div",{key:i,style:{borderLeft:i===0?"none":`1px solid ${border}`,paddingLeft:i===0?0:32}},
+                  React.createElement("div",{style:{fontSize:32,fontWeight:800,color:text,fontFamily:mono,letterSpacing:"-0.03em"}},m.val),
+                  React.createElement("div",{style:{fontSize:12,color:dim,marginTop:2}},m.label)
+                )
               )
             )
           )
@@ -84,7 +223,7 @@ function App(){
     ),
 
     // ═══ THE PROBLEM ═══
-    React.createElement("section",{style:{padding:"100px 28px",borderTop:`1px solid ${border}`}},
+    React.createElement("section",{className:"section-shell",style:{padding:"100px 28px",borderTop:`1px solid ${border}`}},
       React.createElement("div",{style:wrap},
         React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:coral,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"The Problem")),
         React.createElement(F,{delay:0.1},
@@ -106,7 +245,7 @@ function App(){
             {icon:"\uD83D\uDCCA",title:"Complete absence of performance data",desc:"The founder could not answer basic questions: What is our average response time? What do customers contact us about most? Which agent handles the most volume? How many open issues exist right now? Every operational decision was based on intuition rather than evidence.",color:ice},
           ].map((p,i)=>
             React.createElement(F,{key:i,delay:0.1+i*0.08},
-              React.createElement("div",{style:{background:card,border:`1px solid ${border}`,borderRadius:16,padding:"28px 24px"}},
+              React.createElement("div",{style:{background:"linear-gradient(180deg, rgba(19,24,32,.92), rgba(19,24,32,.68))",border:`1px solid ${border}`,borderRadius:16,padding:"28px 24px",backdropFilter:"blur(14px)",boxShadow:"0 26px 70px rgba(0,0,0,.22)"}},
                 React.createElement("div",{style:{fontSize:28,marginBottom:14}},p.icon),
                 React.createElement("div",{style:{fontSize:15,fontWeight:700,color:text,marginBottom:8}},p.title),
                 React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.7}},p.desc)
@@ -118,7 +257,7 @@ function App(){
     ),
 
     // ═══ BEFORE / AFTER ═══
-    React.createElement("section",{style:{padding:"100px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
+    React.createElement("section",{className:"section-shell",style:{padding:"100px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
       React.createElement("div",{style:wrap},
         React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:ice,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"What I Built")),
         React.createElement(F,{delay:0.1},
@@ -135,7 +274,7 @@ function App(){
         ),
         React.createElement(F,{delay:0.25},
           React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))",gap:24}},
-            React.createElement("div",{style:{background:bg,border:`1px solid ${border}`,borderRadius:16,padding:32,position:"relative",overflow:"hidden"}},
+            React.createElement("div",{style:{background:"linear-gradient(180deg, rgba(11,14,20,.94), rgba(15,19,25,.74))",border:`1px solid ${border}`,borderRadius:16,padding:32,position:"relative",overflow:"hidden",backdropFilter:"blur(14px)",boxShadow:"0 28px 80px rgba(0,0,0,.22)"}},
               React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg, ${coral}, ${amber})`}}),
               React.createElement("div",{style:{fontSize:11,fontWeight:700,color:coral,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:20}},"\u26D4  Before"),
               ...["Single shared Gmail inbox for five agents","Emails regularly missed, duplicated, or left unanswered for days","No service level agreements or response time targets","Identical responses rewritten manually 30+ times per day per agent","No performance data of any kind \u2014 all decisions made on intuition","Instagram and Facebook messages going entirely unanswered","Refund requests, product complaints, and general questions all in one undifferentiated pile"].map((t,i)=>
@@ -145,7 +284,7 @@ function App(){
                 )
               )
             ),
-            React.createElement("div",{style:{background:bg,border:`1px solid ${border}`,borderRadius:16,padding:32,position:"relative",overflow:"hidden"}},
+            React.createElement("div",{style:{background:"linear-gradient(180deg, rgba(11,14,20,.94), rgba(15,19,25,.74))",border:`1px solid ${border}`,borderRadius:16,padding:32,position:"relative",overflow:"hidden",backdropFilter:"blur(14px)",boxShadow:"0 28px 80px rgba(0,0,0,.22)"}},
               React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg, ${green}, ${teal})`}}),
               React.createElement("div",{style:{fontSize:11,fontWeight:700,color:green,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:20}},"\u2705  After"),
               ...["Five channels \u2014 email, web form, Instagram, Facebook, WhatsApp \u2014 consolidated into a single ticketing system","Automatic ticket assignment based on agent specialization and current workload","Four SLA policies (urgent: 1hr, high: 4hr, normal: 8hr, low: 24hr) with automatic escalation on breach","Blueprint workflows enforcing step-by-step processes for refunds, replacements, and warranty claims","85+ knowledge base articles enabling customers to resolve common issues independently","Canned responses and macros reducing repetitive manual work by over 60%","Real-time dashboards tracking open tickets, SLA compliance, agent throughput, and customer satisfaction"].map((t,i)=>
@@ -161,7 +300,7 @@ function App(){
     ),
 
     // ═══ HOW IT WORKS ═══
-    React.createElement("section",{style:{padding:"100px 28px"}},
+    React.createElement("section",{className:"section-shell",style:{padding:"100px 28px"}},
       React.createElement("div",{style:wrap},
         React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:teal,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"How It Works")),
         React.createElement(F,{delay:0.1},
@@ -193,7 +332,7 @@ function App(){
                   React.createElement("div",{style:{fontSize:12,color:dim,marginBottom:6}},
                     React.createElement("span",{style:{fontWeight:600,color:muted}},"Trigger: "),s.when
                   ),
-                  React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.75,background:card,border:`1px solid ${border}`,borderRadius:12,padding:"16px 20px",borderLeft:`3px solid ${s.color}30`}},s.auto)
+                  React.createElement("div",{style:{fontSize:13,color:muted,lineHeight:1.75,background:"linear-gradient(180deg, rgba(19,24,32,.92), rgba(19,24,32,.7))",border:`1px solid ${border}`,borderRadius:12,padding:"16px 20px",borderLeft:`3px solid ${s.color}30`,backdropFilter:"blur(12px)",boxShadow:"0 22px 50px rgba(0,0,0,.18)"}},s.auto)
                 )
               )
             )
@@ -203,7 +342,7 @@ function App(){
     ),
 
     // ═══ HARD PROBLEMS ═══
-    React.createElement("section",{style:{padding:"100px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
+    React.createElement("section",{className:"section-shell",style:{padding:"100px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
       React.createElement("div",{style:wrap},
         React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:amber,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"Implementation Challenges")),
         React.createElement(F,{delay:0.1},
@@ -226,7 +365,7 @@ function App(){
             {title:"Ensuring agent adoption of the new system",desc:"The most significant risk in any implementation is not the technology \u2014 it is adoption. These agents had used Gmail for years. I designed a structured transition: hands-on training sessions, printed quick-reference guides at each workstation, workspace layouts optimized to minimize clicks, and a two-week parallel period where both systems ran simultaneously. Within two weeks, every agent had fully migrated and no one requested a return to the previous setup.",tag:"Change Management",color:green},
           ].map((ch,i)=>
             React.createElement(F,{key:i,delay:0.08+i*0.05},
-              React.createElement("div",{style:{background:card,border:`1px solid ${border}`,borderRadius:14,padding:"24px 28px",borderLeft:`3px solid ${ch.color}`}},
+              React.createElement("div",{style:{background:"linear-gradient(180deg, rgba(19,24,32,.9), rgba(19,24,32,.68))",border:`1px solid ${border}`,borderRadius:14,padding:"24px 28px",borderLeft:`3px solid ${ch.color}`,backdropFilter:"blur(14px)",boxShadow:"0 24px 60px rgba(0,0,0,.2)"}},
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8,flexWrap:"wrap"}},
                   React.createElement("span",{style:{fontSize:14,fontWeight:700,color:text}},ch.title),
                   React.createElement("span",{style:{fontSize:10,fontWeight:600,padding:"2px 10px",borderRadius:20,background:ch.color+"12",color:ch.color,fontFamily:mono,letterSpacing:"0.04em",textTransform:"uppercase"}},ch.tag)
@@ -240,7 +379,7 @@ function App(){
     ),
 
     // ═══ DELIVERABLES ═══
-    React.createElement("section",{style:{padding:"100px 28px"}},
+    React.createElement("section",{className:"section-shell",style:{padding:"100px 28px"}},
       React.createElement("div",{style:wrap},
         React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:green,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:16}},"Deliverables")),
         React.createElement(F,{delay:0.1},
@@ -261,7 +400,7 @@ function App(){
             React.createElement(F,{key:i,delay:0.1+i*0.07},
               React.createElement("div",{
                 onMouseEnter:()=>setHovDel(i),onMouseLeave:()=>setHovDel(null),
-                style:{background:card,border:`1px solid ${hovDel===i?d.color+"40":border}`,borderRadius:16,padding:28,transition:"all 0.3s ease",position:"relative",overflow:"hidden"}
+                style:{background:"linear-gradient(180deg, rgba(19,24,32,.92), rgba(19,24,32,.68))",border:`1px solid ${hovDel===i?d.color+"40":border}`,borderRadius:16,padding:28,transition:"all 0.3s ease",position:"relative",overflow:"hidden",backdropFilter:"blur(14px)",boxShadow:hovDel===i?`0 28px 90px ${d.color}18`:"0 24px 70px rgba(0,0,0,.2)",transform:hovDel===i?"translateY(-6px)":"translateY(0)"}
               },
                 React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:2,background:hovDel===i?d.color:"transparent",transition:"all 0.3s ease"}}),
                 React.createElement("div",{style:{fontSize:28,marginBottom:14}},d.icon),
@@ -275,7 +414,7 @@ function App(){
     ),
 
     // ═══ TECH ═══
-    React.createElement("section",{style:{padding:"80px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
+    React.createElement("section",{className:"section-shell",style:{padding:"80px 28px",background:surface,borderTop:`1px solid ${border}`,borderBottom:`1px solid ${border}`}},
       React.createElement("div",{style:{...wrap,textAlign:"center"}},
         React.createElement(F,null,React.createElement("div",{style:{fontSize:11,fontWeight:700,color:dim,letterSpacing:"0.15em",textTransform:"uppercase",marginBottom:32}},"Technologies & Platform")),
         React.createElement(F,{delay:0.1},
@@ -289,7 +428,7 @@ function App(){
     ),
 
     // ═══ CTA ═══
-    React.createElement("section",{style:{padding:"120px 28px 100px"}},
+    React.createElement("section",{className:"section-shell",style:{padding:"120px 28px 100px"}},
       React.createElement("div",{style:{...wrap,textAlign:"center"}},
         React.createElement(F,null,
           React.createElement("h2",{style:{fontFamily:serif,fontSize:"clamp(28px,4.5vw,48px)",color:text,lineHeight:1.15,maxWidth:650,margin:"0 auto 24px"}},
@@ -313,11 +452,12 @@ function App(){
         React.createElement(F,{delay:0.3},
           React.createElement("div",{style:{marginTop:80,paddingTop:40,borderTop:`1px solid ${border}`}},
             React.createElement("div",{style:{fontSize:11,letterSpacing:"0.12em",color:dim,textTransform:"uppercase",marginBottom:8}},"Built by"),
-            React.createElement("div",{style:{fontSize:24,fontWeight:800,color:text,fontFamily:serif}},"Rounak"),
+            React.createElement("div",{style:{fontSize:24,fontWeight:800,color:text,fontFamily:serif}},"Gurmeet"),
             React.createElement("div",{style:{fontSize:13,color:dim,marginTop:6}},"Zoho Desk \u00B7 Help Desk Implementation \u00B7 Support Operations Design")
           )
         )
       )
+    )
     )
   );
 }
