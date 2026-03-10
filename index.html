@@ -74,15 +74,25 @@
   .fx-shard-b{right:20vw;top:26vh;transform:translate3d(0, calc(var(--scroll,0px) * .09), 60px) rotateX(68deg) rotateZ(-28deg)}
   .content-layer{position:relative;z-index:3}
   @media (max-width:760px){
+    body{font-size:15px}
+    .content-layer > section:first-child{padding-top:calc(env(safe-area-inset-top, 0px) + 96px)!important;padding-bottom:88px!important;min-height:100svh!important}
     .fx-bg{opacity:1}
-    .fx-grid{background-size:42px 42px;opacity:.18;transform:rotateX(78deg) translateY(calc(40vh + var(--scroll,0px) * .08)) scale(1.6)}
-    .fx-plane-a{width:58vw;height:58vw;left:-16vw;top:16vh;transform:translate3d(0, calc(var(--scroll,0px) * .10), 0) rotateX(72deg) rotateZ(calc(10deg + var(--scroll-r,0deg)))}
-    .fx-plane-b{width:42vw;height:42vw;right:-6vw;top:14vh;transform:translate3d(0, calc(var(--scroll,0px) * -.08), 90px) rotateX(72deg) rotateZ(calc(-14deg - var(--scroll-r,0deg)))}
-    .fx-plane-c{width:52vw;height:52vw;right:-12vw;bottom:12vh;transform:translate3d(0, calc(var(--scroll,0px) * -.06), 20px) rotateX(74deg) rotateZ(calc(-6deg + var(--scroll-r,0deg) * .5))}
+    .fx-grid{background-size:42px 42px;opacity:.10;transform:rotateX(79deg) translateY(calc(46vh + var(--scroll,0px) * .05)) scale(1.55)}
+    .fx-plane{opacity:.26;backdrop-filter:blur(6px);box-shadow:0 22px 70px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.05)}
+    .fx-plane-a{width:44vw;height:44vw;left:-24vw;top:24vh;transform:translate3d(0, calc(var(--scroll,0px) * .06), 0) rotateX(74deg) rotateZ(calc(8deg + var(--scroll-r,0deg) * .35))}
+    .fx-plane-b{width:30vw;height:30vw;right:-16vw;top:18vh;transform:translate3d(0, calc(var(--scroll,0px) * -.05), 40px) rotateX(74deg) rotateZ(calc(-11deg - var(--scroll-r,0deg) * .25))}
+    .fx-plane-c{width:38vw;height:38vw;right:-20vw;bottom:18vh;transform:translate3d(0, calc(var(--scroll,0px) * -.04), 12px) rotateX(75deg) rotateZ(calc(-7deg + var(--scroll-r,0deg) * .22))}
     .fx-shard{display:none}
-    .fx-line-a{width:76vw;left:-6vw;top:24vh}
-    .fx-line-b{width:88vw;right:-22vw;top:62vh}
-    .hero-stage{display:block;opacity:.72;right:-86px!important;top:34%!important;transform:translateY(-20%) scale(.46)!important}
+    .fx-line{opacity:.24}
+    .fx-line-a{width:54vw;left:18vw;top:19vh;transform:translate3d(0, calc(var(--scroll,0px) * .03), 0) rotate(-12deg)}
+    .fx-line-b{width:56vw;right:-10vw;top:70vh;transform:translate3d(0, calc(var(--scroll,0px) * -.03), 0) rotate(-26deg)}
+    .fx-orb{opacity:.38}
+    .hero-stage{display:none!important}
+  }
+  @media (max-width:760px){
+    .content-layer > section:first-child h1{font-size:clamp(32px,11.5vw,52px)!important;line-height:1.06!important;max-width:100%!important;margin-bottom:22px!important}
+    .content-layer > section:first-child p{font-size:17px!important;line-height:1.72!important;max-width:100%!important}
+    .content-layer > section:first-child [style*="inline-flex"][style*="border-radius:24px"]{max-width:calc(100vw - 56px)!important;flex-wrap:wrap}
   }
   @media (prefers-reduced-motion: reduce){
     .fx-grid,.fx-plane-a,.fx-plane-b,.fx-plane-c,.fx-line-a,.fx-line-b,.fx-shard-a,.fx-shard-b{transform:none!important}
